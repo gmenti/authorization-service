@@ -1,0 +1,14 @@
+{
+	"http.started": "Http iniciado na porta %s",
+	"apm.started": "APM iniciado",
+	"apm.error": "Falha ao iniciar APM (%s)",
+	"eureka.started": "Eureka iniciado",
+	"eureka.error": "Eureka falha (%s)",
+	"worker.started": "Worker iniciado com %s crons",
+	"error.notFound": "Página não encontrada",
+	"error.resourceNotFound": "Recurso não encontrado",
+	"error.unexpected": "Falha interna do servidor",
+	"error.validation": "Dados inválidos",
+	"error.authentication": "Token inválido",
+	"error.duplicatedResource": "Já existe um recurso cadastrado com as chaves únicas fornecidas"
+}

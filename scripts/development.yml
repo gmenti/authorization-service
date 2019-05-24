@@ -1,0 +1,54 @@
+build-development:
+  stage: build
+  image: payly/docker-gitlab-ci:latest
+  services:
+    - docker:dind
+  before_script:
+    # Application
+    - echo "PORT=3000" >> .env
+    - echo "NODE_ENV=production" >> .env
+    - echo "SERVICE_URL=${RANCHER_SERVICE}.${RANCHER_STACK}" >> .env
+    - echo "SERVICE_NAME=${RANCHER_SERVICE}" >> .env
+    - echo "AUTHORIZATION_SERVER=${AUTHORIZATION_SERVER}" >> .env
+    - echo "EUREKA_HOST=${EUREKA_HOST}" >> .env
+    - echo "EUREKA_PORT=${EUREKA_PORT}" >> .env
+    - echo "APM_SERVER_URL=${APM_SERVER_URL}" >> .env
+    # Settings
+    - echo "ACCOUNT_URL=${ACCOUNT_URL}" >> .env
+    - echo "ACCOUNT_ADMIN_KEY=${ACCOUNT_ADMIN_KEY}" >> .env
+    - echo "WALLET_URL=${WALLET_URL}" >> .env
+    - echo "WALLET_API_KEY=${WALLET_API_KEY}" >> .env
+    - echo "TOPUP_URL=${TOPUP_URL}" >> .env
+    - echo "CDN_URL=${CDN_URL}" >> .env
+  script:
+    - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+    - docker build -t $IMAGE_REPOSITORY .
+    - docker push $IMAGE_REPOSITORY
+  after_script:
+    - rm .env
+  only:
+    - develop
+
+deploy-development:
+  stage: deploy
+  image: cdrx/rancher-gitlab-deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - upgrade --no-finish-upgrade --stack $RANCHER_STACK --service $RANCHER_SERVICE --new-image $IMAGE_REPOSITORY --environment $RANCHER_ENVIRONMENT_DEVELOPMENT
+  only:
+    - develop
+
+
+
+documentation:
+  stage: deploy
+  image: payly/node-gitlab-ci:latest
+  variables:
+    AWS_ACCESS_KEY_ID: $AWS_DOCUMENTATION_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_DOCUMENTATION_SECRET_ACCESS_KEY
+  script:
+    - aws s3 rm $AWS_DOCUMENTATION_ENV_DNS --recursive
+    - aws s3 cp ./docs/ $AWS_DOCUMENTATION_ENV_DNS --recursive
+  only:
+    - develop

@@ -1,0 +1,27 @@
+integration:
+  stage: test
+  image: payly/node-gitlab-ci:latest
+  services:
+    - name: mysql:8
+      alias: mysql
+  script:
+    - npm install
+    - npm run migration:up
+    - npm run seed
+    - npm run test:integration
+  only:
+    - ci
+
+unit:
+  stage: test
+  image: node:10-alpine
+  variables:
+    PAYMENT_TIME_LIMIT: 1d
+  script:
+    - npm install
+    - npm run test:unit
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  only:
+    - master
+    - develop
+    - merge_requests

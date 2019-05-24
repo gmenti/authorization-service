@@ -1,0 +1,110 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Micro Statement
+  description: |
+    Micro Statement
+    Homologação: https://processing-cloud.homolog.4all.com/micro-statement
+
+host: https://processing-cloud.homolog.4all.com/micro-statement
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /:
+    get:
+      summary: Realiza consulta do extrato.
+      parameters:
+        - in: query
+          name: balanceType
+          description: Nome do balance type que será realizada a consulta
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Quantidade máxima de registros a retornar
+          schema:
+            type: integer
+        - in: query
+          name: lastId
+          description: "Último ID visualizado na busca anterior para realizar paginação"
+          schema:
+            type: string
+        - in: query
+          name: operation
+          description: "Operações permitidas: DEBIT e CREDIT"
+          schema:
+            type: string
+      responses:
+        200:
+          description: Consulta de extrato
+          schema:
+            type: object
+            required:
+              - id
+              - type
+              - icon
+              - title
+              - date
+              - amount
+              - feeAmount
+              - operation
+              - status
+            properties:
+              id:
+                type: string
+                example: "256"
+              ref:
+                type: string
+                example: "256"
+              icon:
+                type: string
+                example: "https:/cdn.payly.com.br/icons/statement/transferencia_payly"
+              type:
+                type: string
+                example: 'P2P_TRANSFER'
+                enum:
+                  - PROMOCODE
+                  - P2P_TRANSFER
+                  - TED_CASH_IN
+                  - PAYMENT_SLIP_CASH_IN
+                  - DEPOSIT
+                  - WITHDRAWAL
+                  - BANK_CASH_OUT
+                  - CANCELLATION_BANK_CASH_OUT
+                  - PAYMENT_BILL_CASH_OUT
+                  - PAYMENT_QR_CODE
+                  - PAYMENT_TOPUP
+              title: 
+                type: string
+                example: "Transferência Payly"
+              description: 
+                type: number
+                example: "De Fulano Silva"
+              date:
+                type: string
+                example: "2019-04-22T21:36:09.106Z"
+              amount:
+                type: number
+                example: 1000
+              feeAmount:
+                type: number
+                example: 0
+              operation:
+                type: string
+                example: CREDIT
+                enum:
+                  - CREDIT
+                  - DEBIT
+              status:
+                type: string
+                example: PENDING
+                enum:
+                  - PENDING
+                  - CONFIRMED
+                  - CANCELLED
+                  - EXPIRED

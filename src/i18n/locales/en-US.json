@@ -1,0 +1,14 @@
+{
+  "http.started": "Http started on port %s",
+  "apm.started": "APM started",
+  "apm.error": "Failed to init APM (%s)",
+  "eureka.started": "Eureka started",
+  "eureka.error": "Eureka error (%s)",
+  "worker.started": "Worker started %s crons",
+  "error.notFound": "Page not found",
+  "error.resourceNotFound": "Resource not found",
+  "error.unexpected": "Internal server failure",
+  "error.validation": "Invalid request data",
+  "error.authentication": "Invalid token",
+  "error.duplicatedResource": "Already exists resource with received unique keys"
+}
