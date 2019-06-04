@@ -42,7 +42,7 @@ class AuthService {
    * @return {Promise<String?>}
    */
   async getAccountIdFromToken({ accessToken, balanceType }) {
-    if (accessToken.includes('sessionToken')) {
+    if (accessToken.startsWith('sessionToken ')) {
       const customerId = await this.accountIntegration
         .getCustomerId(accessToken.replace('sessionToken ', ''))
         .catch((err) => {

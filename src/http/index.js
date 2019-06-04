@@ -40,7 +40,7 @@ app.use(bodyParser.json({
 }));
 
 /* Status endpoint */
-app.get(['/info', '/status'], async (req, res, next) => {
+app.get('/status', async (req, res, next) => {
   try {
     res.sendStatus(204);
   } catch (err) {
@@ -51,6 +51,7 @@ app.get(['/info', '/status'], async (req, res, next) => {
 app.use(auth);
 
 /* Instatiate routes */
+app.use('/auth', authRoute);
 app.use('/clients', clientRoute);
 app.use('/clients/:clientId/permissions', permissionRoute);
 app.use('/clients/:clientId/roles', roleRoute);
@@ -62,4 +63,3 @@ app.all('*', (req, res, next) => {
 app.use(errorHandler);
 
 module.exports = app;
-
